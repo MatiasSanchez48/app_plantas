@@ -45,7 +45,7 @@ class PageDashBoard extends StatelessWidget {
             backgroundColor: colors.greyNotImage,
             titleAppBar: _titleAppbar(context),
             withAppbar: tabsRouter.activeIndex == 1,
-            bottomNavigationBar: _CustomBottomNavigationBar(
+            bottomNavigationBar: _CustomBottomNavigationBottomBar(
               onIndexChanged: tabsRouter.setActiveIndex,
               indexActual: tabsRouter.activeIndex,
             ),
@@ -59,9 +59,9 @@ class PageDashBoard extends StatelessWidget {
 /// {@template _CustomBottomNavigationBar}
 /// TODO: Add description.
 /// {@endtemplate}
-class _CustomBottomNavigationBar extends StatefulWidget {
+class _CustomBottomNavigationBottomBar extends StatefulWidget {
   /// {@macro _CustomBottomNavigationBar}
-  const _CustomBottomNavigationBar({
+  const _CustomBottomNavigationBottomBar({
     required this.onIndexChanged,
     required this.indexActual,
   });
@@ -73,12 +73,12 @@ class _CustomBottomNavigationBar extends StatefulWidget {
   final int indexActual;
 
   @override
-  _CustomBottomNavigationBarState createState() =>
-      _CustomBottomNavigationBarState();
+  _CustomBottomNavigationBottomBarState createState() =>
+      _CustomBottomNavigationBottomBarState();
 }
 
-class _CustomBottomNavigationBarState
-    extends State<_CustomBottomNavigationBar> {
+class _CustomBottomNavigationBottomBarState
+    extends State<_CustomBottomNavigationBottomBar> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;

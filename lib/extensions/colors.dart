@@ -7,6 +7,8 @@ extension PlantsColorScheme on ColorScheme {
 
   Color get primaryOpacity80 => primary.withOpacity(.8);
 
+  Color get backgroundOpacity50 => background.withOpacity(.5);
+
   Color get greySubTitle => const Color(0xff262D33);
 
   Color get blue => const Color.fromARGB(255, 1, 106, 253);

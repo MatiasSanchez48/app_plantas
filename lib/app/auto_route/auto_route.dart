@@ -11,8 +11,20 @@ class AppRouter extends $AppRouter {
   @override
   List<AutoRoute> get routes => [
         AutoRoute(
-          page: RouteDashBoard.page,
+          page: RouteLogin.page,
           initial: true,
+          path: '/Login',
+        ),
+        AutoRoute(
+          page: RouteRegister.page,
+          path: '/Register',
+        ),
+        AutoRoute(
+          page: RouteForgotPassword.page,
+          path: '/Forgot-Password',
+        ),
+        AutoRoute(
+          page: RouteDashBoard.page,
           path: '/DashBoard',
           children: [
             AutoRoute(

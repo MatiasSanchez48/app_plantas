@@ -1,5 +1,7 @@
+import 'package:app_plantas/app/view/bloc/bloc_theme.dart';
 import 'package:app_plantas/extensions/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template CustomScaffold}
 /// TODO: Add description.
@@ -49,6 +51,55 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      endDrawer: withAppbar
+          ? Drawer(
+              // Aquí puedes personalizar tu EndDrawer
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  DrawerHeader(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                    ),
+                    child: Text('End Drawer'),
+                  ),
+                  ListTile(
+                    title: Text('Opción 1'),
+                    onTap: () {
+                      // Cerrar el EndDrawer y realizar alguna acción
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Opción 2'),
+                    onTap: () {
+                      // Cerrar el EndDrawer y realizar alguna acción
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    title: Text('Cambia Theme'),
+                    onTap: () {
+                      final state = context.read<BlocTheme>().state;
+                      if (state.themeDark) {
+                          context.read<BlocTheme>().add(
+                              const BlocThemeEventToggleTheme(
+                                
+                              ),
+                            );
+                      } else {
+                        context.read<BlocTheme>().add(
+                              const BlocThemeEventToggleTheme(
+                                themeDark: true,
+                              ),
+                            );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            )
+          : null,
       bottomNavigationBar: bottomNavigationBar,
       body: withAppbar
           ? Stack(
@@ -122,6 +173,7 @@ class _CustomAppBar extends StatelessWidget {
               ),
               onPressed: () {
                 // Acciones al hacer clic en el icono de configuración
+                Scaffold.of(context).openEndDrawer();
               },
             ),
           ],

@@ -1,8 +1,12 @@
 import 'package:app_plantas/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
-class ContainerFloaction extends StatelessWidget {
-  const ContainerFloaction({super.key});
+/// {@template ContainerFloacting}
+/// TODO: Add description.
+/// {@endtemplate}
+class ContainerFloacting extends StatelessWidget {
+  /// {@macro ContainerFloacting}
+  const ContainerFloacting({super.key});
 
   @override
   Widget build(BuildContext context) {

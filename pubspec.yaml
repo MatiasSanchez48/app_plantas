@@ -19,6 +19,11 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  
+  # UI animations
+  flutter_animate: ^4.5.0
+  
+  # State management
   flutter_bloc: ^8.1.3
 
   # Environnement of dev
@@ -32,6 +37,10 @@ dependencies:
 
   # Internationalization
   intl: ^0.18.0
+  
+  # Local Storage
+  shared_preferences: ^2.2.2
+
 
 dev_dependencies:
   # Navegaciones

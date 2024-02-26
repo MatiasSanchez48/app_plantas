@@ -44,7 +44,7 @@ class PageConfiguration extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const ContainerFloaction(),
+        const ContainerFloacting(),
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
