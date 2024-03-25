@@ -12,7 +12,7 @@ dependencies:
   auto_route: ^7.8.4
 
   # Blocs
-  bloc: ^8.1.2
+  bloc: ^8.1.4
   # Http
   dio: ^5.4.0
   # Blocs extends
