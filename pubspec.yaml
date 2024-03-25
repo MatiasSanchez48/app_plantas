@@ -46,7 +46,7 @@ dev_dependencies:
   # Navegaciones
   auto_route_generator: ^7.3.2
 
-  bloc_test: ^9.1.4
+  bloc_test: ^9.1.7
 
   # archivos auto generados
   build_runner: ^2.4.6
