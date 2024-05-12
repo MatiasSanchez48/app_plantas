@@ -1,6 +1,6 @@
 import 'package:app_plantas/extensions/extensions.dart';
 import 'package:flutter/material.dart';
-
+// TODO(anyone): add documentation
 class PlantsTextFormField extends StatelessWidget {
   const PlantsTextFormField({
     required this.controller,
@@ -31,29 +31,27 @@ class PlantsTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       style: TextStyle(
-        color: colors.background,
+        color: colors.onBackground,
         fontSize: 16,
       ),
       keyboardType: keyboardType,
       onEditingComplete: onEditingComplete,
       decoration: InputDecoration(
         filled: true,
-        fillColor: fillColor ?? colors.primaryOpacity30,
+        fillColor: fillColor ?? colors.background,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colors.primary),
+        ),
+        disabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colors.primary),
+        ),
+        errorBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: colors.primary),
+        ),
         hintText: hintText,
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
-          ),
-        ),
         hintStyle: TextStyle(
-          color: colors.background,
+          color: colors.onSecondary,
           fontSize: 16,
-        ),
-        prefixIcon: Icon(
-          preffixIcon,
-          color: colors.background,
-          size: 20,
         ),
       ),
     );
@@ -75,7 +73,6 @@ class PlantsTextfildPassword extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlantsTextFormField(
       controller: controller,
-      preffixIcon: Icons.lock_outline_rounded,
       hintText: hintText,
     );
   }

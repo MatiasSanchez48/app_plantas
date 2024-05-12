@@ -8,13 +8,14 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:app_plantas/pages/auth/forgot_password/page_forgot_password.dart'
+import 'package:app_plantas/features/auth/forgot_password/page_forgot_password.dart'
     as _i3;
-import 'package:app_plantas/pages/auth/login/page_login.dart' as _i5;
-import 'package:app_plantas/pages/auth/register/page_register.dart' as _i6;
-import 'package:app_plantas/pages/dashboard/home/page_home.dart' as _i4;
-import 'package:app_plantas/pages/dashboard/page_dashboard.dart' as _i2;
-import 'package:app_plantas/pages/dashboard/settings/page_settings.dart' as _i1;
+import 'package:app_plantas/features/auth/login/page_login.dart' as _i5;
+import 'package:app_plantas/features/auth/register/page_register.dart' as _i6;
+import 'package:app_plantas/features/dashboard/home/page_home.dart' as _i4;
+import 'package:app_plantas/features/dashboard/page_dashboard.dart' as _i2;
+import 'package:app_plantas/features/dashboard/settings/page_settings.dart'
+    as _i1;
 import 'package:auto_route/auto_route.dart' as _i7;
 
 abstract class $AppRouter extends _i7.RootStackRouter {

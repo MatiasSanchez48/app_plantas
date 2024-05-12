@@ -13,7 +13,7 @@ final themeDefaultDark = ThemeData(
 );
 // TODO: Add description
 const themeDefaultPlants = ColorScheme.light(
-  primary: Color(0xff170E68),
+  primary: Color.fromRGBO(245, 178, 61, 1),
   onPrimary: Color(0xffEEEEEE),
   primaryContainer: Color(0xff6788FF),
   background: Color(0xffFFFFFF),
