@@ -25,7 +25,7 @@ class PageForgotPassword extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              flex: 3, // Este widget ocupa 1 parte del espacio disponible
+              flex: 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -82,40 +82,43 @@ class _FormForgotPasswordState extends State<FormForgotPassword> {
 
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            'New password', // TODO(anyone): l10n
-            style: TextStyle(
-              color: colors.onBackground,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              'New password', // TODO(anyone): l10n
+              style: TextStyle(
+                color: colors.onBackground,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          PlantsTextfildPassword(
-            controller: _controllerNewPassword,
-            hintText: 'New password', // TODO(anyone): l10n
-          ).animate().slide().fade(duration: const Duration(seconds: 1)),
-          const SizedBox(height: 25),
-          Text(
-            'Repeat password', // TODO(anyone): l10n
-            style: TextStyle(
-              color: colors.onBackground,
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+            const SizedBox(height: 10),
+            PlantsTextfildPassword(
+              controller: _controllerNewPassword,
+              hintText: 'New password', // TODO(anyone): l10n
+            ).animate().slide().fade(duration: const Duration(seconds: 1)),
+            const SizedBox(height: 25),
+            Text(
+              'Repeat password', // TODO(anyone): l10n
+              style: TextStyle(
+                color: colors.onBackground,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          PlantsTextfildPassword(
-            controller: _controllerRepeatPassword,
-            hintText: 'Repeat Password', // TODO(anyone): l10n
-          ).animate().slide().fade(duration: const Duration(seconds: 1)),
-          const SizedBox(height: 50),
-          _ButtonsChangePasswordAndBack(formKey: _formKey),
-        ],
+            const SizedBox(height: 10),
+            PlantsTextfildPassword(
+              controller: _controllerRepeatPassword,
+              hintText: 'Repeat Password', // TODO(anyone): l10n
+            ).animate().slide().fade(duration: const Duration(seconds: 1)),
+            const SizedBox(height: 50),
+            _ButtonsChangePasswordAndBack(formKey: _formKey),
+          ],
+        ),
       ),
     );
   }

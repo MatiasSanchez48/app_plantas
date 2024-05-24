@@ -125,6 +125,7 @@ class _ButtonsSignInAndSignUp extends StatelessWidget {
               ),
               elevation: 5,
               onPressed: () {
+                context.pushRoute(const RouteHome());
                 if (_formKey.currentState!.validate()) {
                   // TODO(anyone): to add verifi credentials of validations
                 }
