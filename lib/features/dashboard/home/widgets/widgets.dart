@@ -1,3 +1,2 @@
-export 'card_plants.dart';
-export 'list_plants.dart';
-export 'search_plants.dart';
+export 'card_publish.dart';
+export 'list_public.dart';

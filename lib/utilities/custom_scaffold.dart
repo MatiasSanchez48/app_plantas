@@ -14,6 +14,8 @@ class CustomScaffold extends StatelessWidget {
     this.bottomNavigationBar,
     this.withAppbar = false,
     this.titleAppBar = '',
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
     super.key,
   });
 
@@ -47,45 +49,58 @@ class CustomScaffold extends StatelessWidget {
   /// - If the app bar should be displayed.
   final bool withAppbar;
 
+  /// {@macro CustomScaffold}
+  ///
+  /// `floatingActionButtonLocation`:
+  /// - If null, the [ScaffoldState] will use the default location,
+  /// [FloatingActionButtonLocation.endFloat].
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
+
+  /// {@macro CustomScaffold}
+  ///
+  /// `floatingActionButton`:
+  /// - Floating action button.
+  final Widget? floatingActionButton;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: backgroundColor,
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       endDrawer: withAppbar
           ? Drawer(
               // Aquí puedes personalizar tu EndDrawer
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: <Widget>[
-                  DrawerHeader(
+                  const DrawerHeader(
                     decoration: BoxDecoration(
                       color: Colors.blue,
                     ),
                     child: Text('End Drawer'),
                   ),
                   ListTile(
-                    title: Text('Opción 1'),
+                    title: const Text('Opción 1'),
                     onTap: () {
                       // Cerrar el EndDrawer y realizar alguna acción
                       Navigator.pop(context);
                     },
                   ),
                   ListTile(
-                    title: Text('Opción 2'),
+                    title: const Text('Opción 2'),
                     onTap: () {
                       // Cerrar el EndDrawer y realizar alguna acción
                       Navigator.pop(context);
                     },
                   ),
                   ListTile(
-                    title: Text('Cambia Theme'),
+                    title: const Text('Cambia Theme'),
                     onTap: () {
                       final state = context.read<BlocTheme>().state;
                       if (state.themeDark) {
-                          context.read<BlocTheme>().add(
-                              const BlocThemeEventToggleTheme(
-                                
-                              ),
+                        context.read<BlocTheme>().add(
+                              const BlocThemeEventToggleTheme(),
                             );
                       } else {
                         context.read<BlocTheme>().add(

@@ -14,12 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class PageDashBoard extends StatelessWidget {
   /// {@macro PageDashBoard}
   const PageDashBoard({super.key});
-  String _titleAppbar(BuildContext context) {
-    return switch (context.topRoute.name) {
-      RouteConfiguration.name => 'Configuration', // TODO: l10n.
-      _ => '',
-    };
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +29,8 @@ class PageDashBoard extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         routes: const [
           RouteHome(),
+          RouteCategory(),
+          RouteProfile(),
           RouteConfiguration(),
         ],
         builder: (context, child, controller) {
@@ -43,8 +39,11 @@ class PageDashBoard extends StatelessWidget {
           return CustomScaffold(
             body: child,
             backgroundColor: colors.greyNotImage,
-            titleAppBar: _titleAppbar(context),
-            withAppbar: tabsRouter.activeIndex == 1,
+            titleAppBar: context.routeData.name.nameRoute(context),
+            withAppbar: tabsRouter.activeIndex == 3,
+            floatingActionButton: const _CustomFloatingButton(),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: _CustomBottomNavigationBottomBar(
               onIndexChanged: tabsRouter.setActiveIndex,
               indexActual: tabsRouter.activeIndex,
@@ -56,10 +55,37 @@ class PageDashBoard extends StatelessWidget {
   }
 }
 
+class _CustomFloatingButton extends StatelessWidget {
+  const _CustomFloatingButton();
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    return FloatingActionButton(
+      onPressed: () {
+        // TODO(anyone): Add logic to add new plant
+      },
+      tooltip: 'Add new plant', // TODO: Add translations.
+      backgroundColor: colors.primary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 0,
+      clipBehavior: Clip.hardEdge,
+      child: Icon(
+        Icons.add,
+        color: colors.onBackground,
+        size: 25,
+      ),
+    );
+  }
+}
+
 /// {@template _CustomBottomNavigationBar}
 /// TODO: Add description.
 /// {@endtemplate}
-class _CustomBottomNavigationBottomBar extends StatefulWidget {
+class _CustomBottomNavigationBottomBar extends StatelessWidget {
   /// {@macro _CustomBottomNavigationBar}
   const _CustomBottomNavigationBottomBar({
     required this.onIndexChanged,
@@ -72,13 +98,12 @@ class _CustomBottomNavigationBottomBar extends StatefulWidget {
   /// TODO: Add description.
   final int indexActual;
 
-  @override
-  _CustomBottomNavigationBottomBarState createState() =>
-      _CustomBottomNavigationBottomBarState();
-}
+  Color _indexActually(int number, BuildContext context) {
+    final colors = context.colors;
 
-class _CustomBottomNavigationBottomBarState
-    extends State<_CustomBottomNavigationBottomBar> {
+    return number == indexActual ? colors.primary : colors.onSecondary;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -89,33 +114,48 @@ class _CustomBottomNavigationBottomBarState
         border: Border(
           top: BorderSide(color: colors.primaryOpacity30),
         ),
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
         color: colors.background,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          const Spacer(),
           IconButton(
             iconSize: 30,
             icon: Icon(
               Icons.home_rounded,
-              color:
-                  0 == widget.indexActual ? colors.primary : colors.onSecondary,
+              color: _indexActually(0, context),
             ),
-            onPressed: () => widget.onIndexChanged(0),
+            onPressed: () => onIndexChanged(0),
           ),
+          const Spacer(),
           IconButton(
             iconSize: 30,
             icon: Icon(
-              Icons.menu_rounded,
-              color:
-                  1 == widget.indexActual ? colors.primary : colors.onSecondary,
+              Icons.grid_view_rounded,
+              color: _indexActually(1, context),
             ),
-            onPressed: () => widget.onIndexChanged(1),
+            onPressed: () => onIndexChanged(1),
           ),
+          const Spacer(flex: 2),
+          IconButton(
+            iconSize: 30,
+            icon: Icon(
+              Icons.person_rounded,
+              color: _indexActually(2, context),
+            ),
+            onPressed: () => onIndexChanged(2),
+          ),
+          const Spacer(),
+          IconButton(
+            iconSize: 30,
+            icon: Icon(
+              Icons.settings_rounded,
+              color: _indexActually(3, context),
+            ),
+            onPressed: () => onIndexChanged(3),
+          ),
+          const Spacer(),
         ],
       ),
     );

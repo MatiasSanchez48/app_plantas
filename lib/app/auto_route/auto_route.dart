@@ -36,6 +36,14 @@ class AppRouter extends $AppRouter {
               page: RouteConfiguration.page,
               path: 'Configuration',
             ),
+            AutoRoute(
+              page: RouteCategory.page,
+              path: 'Category',
+            ),
+            AutoRoute(
+              page: RouteProfile.page,
+              path: 'Profile',
+            ),
           ],
         ),
       ];
