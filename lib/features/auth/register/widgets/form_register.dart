@@ -1,9 +1,10 @@
-import 'package:app_plantas/app/auto_route/auto_route.gr.dart';
 import 'package:app_plantas/extensions/extensions.dart';
+import 'package:app_plantas/features/auth/register/bloc/bloc_register.dart';
+import 'package:app_plantas/features/auth/register/widgets/widgets.dart';
 import 'package:app_plantas/utilities/widgets/widgets.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template FormRegister}
 /// TODO: Add description.
@@ -32,7 +33,18 @@ class _FormRegisterState extends State<FormRegister> {
   final _controllerPassword = TextEditingController();
 
   /// Bool for terms and conditions.
-  bool _temsAndConditions = false;
+  bool? _termsAndConditions;
+
+  ///
+  bool? _invalidCredentials;
+
+  @override
+  void dispose() {
+    _controllerPassword.dispose();
+    _controllerEmail.dispose();
+    _controllerName.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,175 +52,134 @@ class _FormRegisterState extends State<FormRegister> {
 
     return Form(
       key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Name', // TODO(anyone): l10n
-            style: TextStyle(
-              color: colors.onBackground,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+      child: AutofillGroup(
+        child: DefaultTextStyle(
+          style: TextStyle(
+            color: colors.onBackground,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
-          const SizedBox(height: 10),
-          PlantsTextfildPassword(
-            controller: _controllerName,
-            hintText: 'Enter your name', // TODO(anyone): l10n
-          ).animate().slide().fade(duration: const Duration(seconds: 1)),
-          const SizedBox(height: 15),
-          Text(
-            'E-mail address', // TODO(anyone): l10n
-            style: TextStyle(
-              color: colors.onBackground,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          PlantsTextFormField(
-            controller: _controllerEmail,
-            hintText: 'Enter your email', // TODO(anyone): l10n
-          ).animate().slide().fade(duration: const Duration(seconds: 1)),
-          const SizedBox(height: 15),
-          Text(
-            'Password', // TODO(anyone): l10n
-            style: TextStyle(
-              color: colors.onBackground,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          PlantsTextfildPassword(
-            controller: _controllerPassword,
-            hintText: 'Enter your password', // TODO(anyone): l10n
-          ).animate().slide().fade(duration: const Duration(seconds: 1)),
-          const SizedBox(height: 10),
-          Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Checkbox(
-                value: _temsAndConditions,
-                onChanged: (e) => setState(() => _temsAndConditions = e!),
+              const Text(
+                'Name', // TODO(anyone): l10n
               ),
-              GestureDetector(
-                onTap: () =>
-                    setState(() => _temsAndConditions = !_temsAndConditions),
-                child: Text(
-                  'By Signing Agree with ', // TODO(anyone): l10n
+              const SizedBox(height: 10),
+              PlantsTextFormField(
+                controller: _controllerName,
+                preffixIcon: Icons.person_outlined,
+                autofillHints: const [AutofillHints.name],
+                keyboardType: TextInputType.name,
+                hintText: 'Enter your name', // TODO(anyone): l10n
+              ).animate().slide().fade(duration: const Duration(seconds: 1)),
+              const SizedBox(height: 15),
+              const Text(
+                'E-mail address', // TODO(anyone): l10n
+              ),
+              const SizedBox(height: 10),
+              PlantsTextFormField(
+                controller: _controllerEmail, preffixIcon: Icons.email_outlined,
+                keyboardType: TextInputType.emailAddress,
+                autofillHints: const [AutofillHints.email],
+                hintText: 'Enter your email', // TODO(anyone): l10n
+              ).animate().slide().fade(duration: const Duration(seconds: 1)),
+              const SizedBox(height: 15),
+              const Text(
+                'Password', // TODO(anyone): l10n
+              ),
+              const SizedBox(height: 10),
+              PlantsTextfildPassword(
+                controller: _controllerPassword,
+                autofillHints: const [AutofillHints.password],
+                keyboardType: TextInputType.visiblePassword,
+                hintText: 'Enter your password', // TODO(anyone): l10n
+              ).animate().slide().fade(duration: const Duration(seconds: 1)),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Checkbox(
+                    value: _termsAndConditions ?? false,
+                    onChanged: (e) => setState(() => _termsAndConditions = e!),
+                  ),
+                  GestureDetector(
+                    onTap: () => setState(() =>
+                        _termsAndConditions = !(_termsAndConditions ?? false)),
+                    child: const Text(
+                      'By Signing Agree with ', // TODO(anyone): l10n
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {
+                      // TODO(anyone): open to terms and policy.
+                    },
+                    child: Text(
+                      'Terms & Policy', // TODO(anyone): l10n
+                      style: TextStyle(
+                        color: colors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              if (_termsAndConditions == false && _invalidCredentials == false)
+                Text(
+                  'Accept Terms & Policy', // TODO(anyone): l10n
                   style: TextStyle(
-                    color: colors.onBackground,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
+                    color: colors.redPlants,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              InkWell(
-                onTap: () {
-                  // TODO(anyone): open to terms and policy.
-                },
-                child: Text(
-                  'Terms & Policy', // TODO(anyone): l10n
+              if ((_controllerEmail.text.isEmpty ||
+                      _controllerPassword.text.isEmpty ||
+                      _controllerName.text.isEmpty) &&
+                  _invalidCredentials != null &&
+                  _invalidCredentials == false)
+                Text(
+                  'Check credentials', // TODO(anyone): l10n
                   style: TextStyle(
-                    color: colors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    color: colors.redPlants,
+                    fontWeight: FontWeight.w600,
                   ),
+                ),
+              BlocBuilder<BlocRegister, BlocRegisterState>(
+                builder: (context, state) {
+                  if (state is BlocRegisterStateErrorUserAlreadyExists) {
+                    return Text(
+                      'User already exists', // TODO(anyone): l10n
+                      style: TextStyle(
+                        color: colors.redPlants,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  }
+                  return const Text(
+                    '', // TODO(anyone): l10n
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 30),
+              ButtonsSignUpAndSignIn(
+                controllerPassword: _controllerPassword,
+                termsAndConditions: _termsAndConditions ?? false,
+                controllerEmail: _controllerEmail,
+                controllerName: _controllerName,
+                formKey: _formKey,
+                onPressed: (value) => setState(
+                  () => _invalidCredentials = value,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 30),
-          _ButtonsSignUpAndSignIn(formKey: _formKey),
-        ],
+        ),
       ),
-    );
-  }
-}
-
-class _ButtonsSignUpAndSignIn extends StatelessWidget {
-  const _ButtonsSignUpAndSignIn({
-    required GlobalKey<FormState> formKey,
-  }) : _formKey = formKey;
-
-  final GlobalKey<FormState> _formKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 45,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  colors.primaryOpacity50,
-                  colors.primary,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              elevation: 5,
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // TODO(anyone): to add verifi credentials of validations
-                }
-              },
-              child: Text(
-                'Sign Up', // TODO(anyone): l10n
-                style: TextStyle(
-                  color: colors.background,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          )
-              .animate()
-              .slide()
-              .fade(duration: const Duration(seconds: 1))
-              .shimmer(),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: Container(
-            height: 45,
-            decoration: BoxDecoration(
-              color: colors.background,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: colors.onSecondary),
-            ),
-            child: MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              elevation: 5,
-              onPressed: () => context.replaceRoute(const RouteLogin()),
-              child: Text(
-                'Sign In', // TODO(anyone): l10n
-                style: TextStyle(
-                  color: colors.onSecondary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            ),
-          )
-              .animate()
-              .slide()
-              .fade(duration: const Duration(seconds: 1))
-              .shimmer(),
-        ),
-      ],
     );
   }
 }

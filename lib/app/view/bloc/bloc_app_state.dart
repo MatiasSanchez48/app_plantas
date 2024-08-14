@@ -1,15 +1,15 @@
-part of 'bloc_theme.dart';
+part of 'bloc_app.dart';
 
-sealed class BlocThemeState extends Equatable {
-  const BlocThemeState._({
+sealed class BlocAppState extends Equatable {
+  const BlocAppState._({
     required this.theme,
     this.themeDark = false,
   });
 
-  BlocThemeState.desde(
-    BlocThemeState otro, {
-    bool? themeDark,
+  BlocAppState.desde(
+    BlocAppState otro, {
     ThemeData? theme,
+    bool? themeDark,
   }) : this._(
           themeDark: themeDark ?? otro.themeDark,
           theme: theme ?? otro.theme,
@@ -26,12 +26,12 @@ sealed class BlocThemeState extends Equatable {
       ];
 }
 
-class BlocThemeStateInitial extends BlocThemeState {
-  const BlocThemeStateInitial(ThemeData theme) : super._(theme: theme);
+class BlocAppStateInitial extends BlocAppState {
+  const BlocAppStateInitial(ThemeData theme) : super._(theme: theme);
 }
 
-class ThemeUpdatedState extends BlocThemeState {
-  ThemeUpdatedState.desde(
+class BlocAppUpdatedState extends BlocAppState {
+  BlocAppUpdatedState.desde(
     super.otro, {
     super.themeDark,
     super.theme,

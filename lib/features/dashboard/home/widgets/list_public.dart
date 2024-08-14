@@ -1,13 +1,14 @@
 import 'package:app_plantas/extensions/extensions.dart';
-import 'package:app_plantas/features/dashboard/home/page_home.dart';
 import 'package:app_plantas/features/dashboard/home/widgets/widgets.dart';
+import 'package:app_plantas/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// TODO: Add description.
 class ListOfPublics extends StatelessWidget {
   const ListOfPublics({
     required this.title,
-    required this.modelPublics,
+    required this.plants,
     super.key,
   });
 
@@ -15,7 +16,7 @@ class ListOfPublics extends StatelessWidget {
   final String title;
 
   /// TODO: Add description.
-  final List<ModelPublics> modelPublics;
+  final List<Plant> plants;
 
   /// TODO: Add description.
   void _navigateToDetails(BuildContext context) {
@@ -49,15 +50,12 @@ class ListOfPublics extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              SizedBox(
-                height: 300,
-                child: ListView.builder(
-                  itemCount: modelPublics.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) => CardPublish(
-                    modelPublics: modelPublics[index],
-                  ),
+              ListView.builder(
+                itemCount: plants.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) => CardPublish(
+                  plant: plants[index],
                 ),
               ),
             ],

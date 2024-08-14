@@ -1,6 +1,7 @@
 import 'package:app_plantas/app/auto_route/auto_route.gr.dart';
 import 'package:app_plantas/extensions/extensions.dart';
 import 'package:app_plantas/features/dashboard/home/bloc/bloc_home.dart';
+import 'package:app_plantas/models/models.dart';
 import 'package:app_plantas/utilities/utilities.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -13,71 +14,45 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// {@endtemplate}
 class PageDashBoard extends StatelessWidget {
   /// {@macro PageDashBoard}
-  const PageDashBoard({super.key});
+  const PageDashBoard({
+    this.usuario,
+    super.key,
+  });
+  final User? usuario;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => BlocHome()..add(const BlocHomeEventInitial()),
-        ),
+    return AutoTabsRouter.tabBar(
+      physics: const NeverScrollableScrollPhysics(),
+      routes: const [
+        RouteHome(),
+        RouteCategory(),
+        RouteChats(),
+        RouteConfiguration(),
       ],
-      child: AutoTabsRouter.tabBar(
-        physics: const NeverScrollableScrollPhysics(),
-        routes: const [
-          RouteHome(),
-          RouteCategory(),
-          RouteProfile(),
-          RouteConfiguration(),
-        ],
-        builder: (context, child, controller) {
-          final tabsRouter = AutoTabsRouter.of(context);
+      builder: (context, child, controller) {
+        final tabsRouter = AutoTabsRouter.of(context);
 
-          return CustomScaffold(
+        return BlocProvider<BlocHome>(
+          create: (context) =>
+              BlocHome(usuario: usuario)..add(const BlocHomeEventInitial()),
+          child: CustomScaffold(
             body: child,
             backgroundColor: colors.greyNotImage,
             titleAppBar: context.routeData.name.nameRoute(context),
             withAppbar: tabsRouter.activeIndex == 3,
-            floatingActionButton: const _CustomFloatingButton(),
+            floatingActionButton: const CustomFloatingButton(),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: _CustomBottomNavigationBottomBar(
               onIndexChanged: tabsRouter.setActiveIndex,
               indexActual: tabsRouter.activeIndex,
             ),
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _CustomFloatingButton extends StatelessWidget {
-  const _CustomFloatingButton();
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    return FloatingActionButton(
-      onPressed: () {
-        // TODO(anyone): Add logic to add new plant
+          ),
+        );
       },
-      tooltip: 'Add new plant', // TODO: Add translations.
-      backgroundColor: colors.primary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      elevation: 0,
-      clipBehavior: Clip.hardEdge,
-      child: Icon(
-        Icons.add,
-        color: colors.onBackground,
-        size: 25,
-      ),
     );
   }
 }

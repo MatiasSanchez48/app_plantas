@@ -73,6 +73,7 @@ class _PageCategoryState extends State<PageCategory> {
                 bottom: Radius.circular(30),
               ),
               child: PlantsImage(
+                tag: 'category',
                 image: AssetImage(
                   'assets/images/jardin_fondo.png',
                 ),

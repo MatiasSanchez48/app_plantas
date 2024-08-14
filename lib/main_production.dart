@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   await dotenv.load(fileName: 'prod.env');
   WidgetsFlutterBinding.ensureInitialized();
-
   await SharedPreferences.getInstance();
 
   await bootstrap(App.new);

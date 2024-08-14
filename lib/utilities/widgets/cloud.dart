@@ -1,3 +1,4 @@
+import 'package:app_plantas/extensions/extensions.dart';
 import 'package:flutter/material.dart';
 
 // TODO(anyone): add documentation
@@ -50,27 +51,25 @@ class CloudWidget extends StatelessWidget {
 class CloudPart extends StatelessWidget {
   const CloudPart({
     required this.radius,
-    this.color = Colors.white,
     super.key,
   });
 
 // TODO(anyone): add documentation
   final double radius;
 
-// TODO(anyone): add documentation
-  final Color color;
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Container(
       width: radius * 2,
       height: radius * 2,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color,
+        color: colors.background,
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.6),
+            color: colors.background.withOpacity(0.6),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(3, 0),

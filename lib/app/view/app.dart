@@ -1,6 +1,6 @@
 import 'package:app_plantas/app/auto_route/auto_route.dart';
 import 'package:app_plantas/app/auto_route/auto_route_observer.dart';
-import 'package:app_plantas/app/view/bloc/bloc_theme.dart';
+import 'package:app_plantas/app/view/bloc/bloc_app.dart';
 import 'package:app_plantas/l10n/l10n.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +23,24 @@ class _AppState extends State<App> {
   @override
   void initState() {
     appRouter = AppRouter();
+    _initializeAppRouter();
     super.initState();
+  }
+
+  Future<void> _initializeAppRouter() async {
+    await appRouter.initialize();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<BlocTheme>(
-      create: (context) => BlocTheme(),
-      child: BlocBuilder<BlocTheme, BlocThemeState>(
+    if (!appRouter.isInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return BlocProvider<BlocApp>(
+      create: (context) => BlocApp(),
+      child: BlocBuilder<BlocApp, BlocAppState>(
         builder: (context, state) {
           return MaterialApp.router(
             theme: state.theme,

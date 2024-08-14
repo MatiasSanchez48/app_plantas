@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:app_plantas/models/models.dart';
 import 'package:app_plantas/utilities/utilities.dart';
 import 'package:dio/dio.dart';
@@ -6,55 +7,85 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class RepositoryPlants {
-  final dio = Dio();
-  final url =
+  final _dio = Dio();
+  final _url =
       kIsWeb ? dotenv.env['API_URL_WEB']! : dotenv.env['API_URL_MOBILE']!;
 
-  Future<List<Plants>> getPlants() async {
-    return methodCustomCRUD(
+  Future<List<Plant>> getPlants() async {
+    return methodCustom(
       callback: () async {
-        final response = await dio.get<List<dynamic>>('${url}api/Plantas');
+        final response = await _dio
+            .get<List<dynamic>>('${_url}WebServicesGenerico/api/Plantas');
 
         final jsonDataList =
             List<Map<String, dynamic>>.from(response.data ?? []);
 
-        final plantsList = jsonDataList.map(Plants.fromJson).toList();
+        final plantsList = jsonDataList.map(Plant.fromJson).toList();
 
         return plantsList;
       },
     );
   }
 
-  Future<Plants> getPlant({required String id}) async {
-    return methodCustomCRUD(
+  Future<Plant> getPlant({required String id}) async {
+    return methodCustom(
       callback: () async {
-        final response = await dio.get<dynamic>('$url/api/Plantas/$id');
+        final response = await _dio
+            .get<dynamic>('${_url}WebServicesGenerico/api/Plantas/$id');
 
-        final plant = Plants.fromJson(response.data as Map<String, dynamic>);
+        final plant = Plant.fromJson(response.data as Map<String, dynamic>);
 
         return plant;
       },
     );
   }
 
-  Future<String> postPlant(Plants plant) async {
-    return methodCustomCRUD(
+  Future<Plant> createPlant(
+    Plant plant,
+    List<File> images,
+    String idAutor,
+  ) async {
+    return methodCustom(
       callback: () async {
-        final response = await dio.post<String>(
-          '$url/api/Plantas',
-          data: plant.toJson(),
+        final formData = FormData();
+
+        formData.fields.addAll([
+          MapEntry('name', plant.name ?? ''),
+          MapEntry('descripcion', plant.descripcion ?? ''),
+        ]);
+
+        for (final image in images) {
+          formData.files.add(
+            MapEntry(
+              'imagenes',
+              await MultipartFile.fromFile(
+                image.path,
+                filename: image.path.split('/').last,
+              ),
+            ),
+          );
+        }
+
+        final response = await _dio.post<Map<String, dynamic>>(
+          '${_url}WebServicesGenerico/api/Plantas?idAutor=$idAutor',
+          data: formData,
         );
 
-        return response.data.toString();
+        if (response.statusCode == 200) {
+          final plant = Plant.fromJson(response.data!);
+          return plant;
+        } else {
+          throw Exception('Failed to create plant');
+        }
       },
     );
   }
 
-  Future<String> putPlant(Plants plant) async {
-    return methodCustomCRUD(
+  Future<String> putPlant(Plant plant) async {
+    return methodCustom(
       callback: () async {
-        final response = await dio.put<String>(
-          '$url/api/Plantas',
+        final response = await _dio.put<String>(
+          '${_url}WebServicesGenerico/api/Plantas',
         );
 
         return response.data.toString();
@@ -63,10 +94,10 @@ class RepositoryPlants {
   }
 
   Future<String> deletePlant(String id) async {
-    return methodCustomCRUD(
+    return methodCustom(
       callback: () async {
-        final response = await dio.delete<String>(
-          '$url/api/Plantas/$id',
+        final response = await _dio.delete<String>(
+          '${_url}WebServicesGenerico/api/Plantas/$id',
         );
 
         return response.data.toString();

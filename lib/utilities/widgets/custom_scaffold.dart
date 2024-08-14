@@ -1,7 +1,6 @@
-import 'package:app_plantas/app/view/bloc/bloc_theme.dart';
 import 'package:app_plantas/extensions/extensions.dart';
+import 'package:app_plantas/utilities/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 /// {@template CustomScaffold}
 /// TODO: Add description.
@@ -68,53 +67,7 @@ class CustomScaffold extends StatelessWidget {
       backgroundColor: backgroundColor,
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
-      endDrawer: withAppbar
-          ? Drawer(
-              // Aquí puedes personalizar tu EndDrawer
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  const DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                    ),
-                    child: Text('End Drawer'),
-                  ),
-                  ListTile(
-                    title: const Text('Opción 1'),
-                    onTap: () {
-                      // Cerrar el EndDrawer y realizar alguna acción
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Opción 2'),
-                    onTap: () {
-                      // Cerrar el EndDrawer y realizar alguna acción
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Cambia Theme'),
-                    onTap: () {
-                      final state = context.read<BlocTheme>().state;
-                      if (state.themeDark) {
-                        context.read<BlocTheme>().add(
-                              const BlocThemeEventToggleTheme(),
-                            );
-                      } else {
-                        context.read<BlocTheme>().add(
-                              const BlocThemeEventToggleTheme(
-                                themeDark: true,
-                              ),
-                            );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            )
-          : null,
+      endDrawer: withAppbar ? const CustomDrawer() : null,
       bottomNavigationBar: bottomNavigationBar,
       body: withAppbar
           ? Stack(

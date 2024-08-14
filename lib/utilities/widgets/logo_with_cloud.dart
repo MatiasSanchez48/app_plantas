@@ -22,13 +22,15 @@ class LogoWithCloud extends StatelessWidget {
 
   /// TODO(anyone): add documentation
   factory LogoWithCloud.downCloud() => const LogoWithCloud(
-        child: Column(
-          children: [
-            CloudWidget(isCloudDown: true),
-            SizedBox(height: 20),
-            Center(child: Logo()),
-            SizedBox(height: 30),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CloudWidget(isCloudDown: true),
+              SizedBox(height: 20),
+              Center(child: Logo()),
+              SizedBox(height: 30),
+            ],
+          ),
         ),
       );
 
